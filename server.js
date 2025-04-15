@@ -8,23 +8,26 @@ const app = express();
 // Дозволяємо лише конкретні домени (де твій фронтенд)
 const allowedOrigins = [
   'https://versel-ashen.vercel.app',
-  'http://localhost:3000', // Додаємо для локального тестування фронтенду
+  'http://localhost:3000',
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true); // дозволяємо запит
+    // дозволяємо запити без origin (наприклад, з Postman)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS')); // якщо домен не в списку
+      console.log('⛔ Блоковано CORS-запит з:', origin);
+      callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true, // якщо треба cookies, токени і т.п.
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-// Включаємо CORS на сервері
 app.use(cors(corsOptions));
+
 
 app.use(express.json());
 
