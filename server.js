@@ -26,8 +26,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
-app.use(cors(corsOptions));
-
+app.use(cors()); // Дозволяє ВСЕ
 
 app.use(express.json());
 
